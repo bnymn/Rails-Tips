@@ -6,6 +6,7 @@
 # 
 # Apparently, Paperclip::Attachement.interpolate method is private. So
 # I copied its body, which is interpolator.interpolate(pattern, self, style_name)
+
 namespace :paperclip do
   task :move_attachments => :environment do
     News.find_each do |item|
@@ -21,6 +22,9 @@ namespace :paperclip do
           # if there are multiple styles, you want to recreate them :
           post.image.reprocess! 
           image.close
+
+          # Since we copied from old location, we can now safely delete the old one.
+          File.delete(filename)
         end
     end
   end
